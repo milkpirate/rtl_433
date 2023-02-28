@@ -511,7 +511,9 @@ struct data_output *data_output_influx_create(struct mg_mgr *mgr, char *opts)
     influx->output.print_int    = print_influx_int;
     influx->output.output_free  = data_output_influx_free;
 
-    print_logf(LOG_CRITICAL, "InfluxDB", "Publishing data to InfluxDB (%s)", url);
+    char *scrubbed_url = scrub_password_from_url(url, "*****");
+    print_logf(LOG_CRITICAL, "InfluxDB", "Publishing data to InfluxDB (%s)", scrubbed_url);
+    free(scrubbed_url);
 
     influx->mgr = mgr;
     influx_client_init(influx, url, token);

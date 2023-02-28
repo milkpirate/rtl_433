@@ -158,6 +158,17 @@ bool str_endswith(char const *restrict str, char const *restrict suffix);
 */
 char *str_replace(char const *orig, char const *rep, char const *with);
 
+/** Replace the password in influxdb URL with placeholder.
+    I.e https://foo.bar/foz?p=<password>&u=user -> https://foo.bar/foz?p=*****&u=user
+
+    This utility function is useful when one wants to remove passwords from outputs
+
+    @param url string to search for a parameter (p=...)
+    @param password_placeholder pattern to replace the password with
+    @return a new string that has the password replaced with password_placeholder
+*/
+char *scrub_password_from_url(char const *url, char const *password_placeholder);
+
 /** Make a nice printable string for a frequency.
 
     @param freq the frequency to convert to a string.

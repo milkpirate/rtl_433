@@ -205,6 +205,30 @@ char *str_replace(char const *orig, char const *rep, char const *with)
     return result;
 }
 
+char *scrub_password_from_url(const char *url, const char *replacement)
+{
+    size_t alloc_size = strlen(url);
+    char *scrubbed = malloc(alloc_size);
+    if(!scrubbed) {
+        // better return nothing than leak passwords
+        return NULL;
+    }
+    strcpy(scrubbed, url);
+
+    char *password = strstr(scrubbed, "p=");
+    if(!password) {
+        return scrubbed;
+    }
+    password += 2;
+
+    char *next_parameter = strchr(password, '&');
+    if(next_parameter) {
+        *next_parameter = '\0';
+    }
+
+    return str_replace(url, password, replacement);
+}
+
 // Make a more readable string for a frequency.
 char const *nice_freq (double freq)
 {
