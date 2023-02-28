@@ -2,10 +2,11 @@
 # Compile test cases
 ########################################################################
 add_executable(data-test data-test.c ../src/output_file.c ../src/term_ctl.c)
-
 target_link_libraries(data-test data)
-
 add_test(data-test data-test)
+
+add_executable(scrub-url-test scrub-url.c ../src/r_util.c)
+add_test(scrub-url-test scrub-url-test)
 
 add_executable(baseband-test baseband-test.c ../src/baseband.c ../src/logger.c)
 
@@ -22,9 +23,7 @@ endif()
 add_definitions(-D_TEST)
 foreach(testSrc bitbuffer.c fileformat.c optparse.c util.c)
     get_filename_component(testName ${testSrc} NAME_WE)
-
     add_executable(test_${testName} ../src/${testSrc})
-
     add_test(${testName}_test test_${testName})
 endforeach(testSrc)
 
